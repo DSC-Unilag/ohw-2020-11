@@ -1,7 +1,7 @@
 # Budget-Go App
 
-![iOS and Android App Builds](https://github.com/DSC-Unilag/ohw-2020-11/workflows/Build/badge.svg)
-![Mobil Tests](https://github.com/DSC-Unilag/ohw-2020-11/workflows/Test/badge.svg)
+![iOS and Android App Builds](https://github.com/DSC-Unilag/ohw-2020-11/workflows/Client%20Build/badge.svg)
+![Mobil Tests](https://github.com/DSC-Unilag/ohw-2020-11/workflows/Client%20Tests/badge.svg)
 
 
 <!-- This is formatted strangely but automatically by Prettier. -->
@@ -38,4 +38,8 @@ Here is the basic suggested skeleton for your app repo that each of the starter 
 │   └── 
 ├── README.md
 └── .gitignore
+
 ```
+
+
+
