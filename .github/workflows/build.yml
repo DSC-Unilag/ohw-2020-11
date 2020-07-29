@@ -2,8 +2,12 @@ name: Client Build
 on:
   push: # calls action on push
     branches: [ master ] # calls action on master branch
+    paths:
+      - 'mobile-client/**'
   pull_request: # calls action on pull request
     branches: [ master ] # calls action on master branch
+    paths:
+      - 'mobile-client/**'
 jobs:
   build-ios:
     name: Build iOS app
@@ -15,6 +19,7 @@ jobs:
           flutter-version: '1.17.5'
           channel: 'stable'
       - run: flutter pub get
+        working-directory: ./mobile-client
       - run: flutter build ios --no-codesign
   build-android:
     name: Build Android app
@@ -29,4 +34,5 @@ jobs:
           flutter-version: '1.17.5'
           channel: 'stable'
       - run: flutter pub get
+        working-directory: ./mobile-client
       - run: flutter build apk # this is a fat apk. to split, use flutter build apk --split-per-abi

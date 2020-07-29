@@ -2,8 +2,12 @@ name: Client Tests
 on:
   push:
     branches: [ master ]
+    paths:
+      - 'mobile-client/**'
   pull_request:
     branches: [ master ]
+    paths:
+      - 'mobile-client/**'
 jobs:
   test:
     name: Test client on ${{ matrix.os }}
@@ -18,5 +22,8 @@ jobs:
           flutter-version: '1.17.5'
           channel: 'stable'
       - run: flutter pub get
+        working-directory: ./mobile-client
       - run: flutter analyze --no-pub
+        working-directory: ./mobile-client
       - run: flutter format lib/
+        working-directory: ./mobile-client
