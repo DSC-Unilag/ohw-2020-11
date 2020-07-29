@@ -21,6 +21,7 @@ jobs:
       - run: flutter pub get
         working-directory: ./mobile-client
       - run: flutter build ios --no-codesign
+        working directory: ./mobile-client
   build-android:
     name: Build Android app
     runs-on: ubuntu-latest
@@ -36,3 +37,4 @@ jobs:
       - run: flutter pub get
         working-directory: ./mobile-client
       - run: flutter build apk # this is a fat apk. to split, use flutter build apk --split-per-abi
+        working directory: ./mobile-client
