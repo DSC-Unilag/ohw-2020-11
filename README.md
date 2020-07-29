@@ -1,9 +1,41 @@
-# budget_app
+# Budget-Go App
 
-A Budget application.
+![iOS and Android App Builds](https://github.com/DSC-Unilag/ohw-2020-11/workflows/Build/badge.svg)
+![Mobil Tests](https://github.com/DSC-Unilag/ohw-2020-11/workflows/Test/badge.svg)
 
-An app that allows you track inflows and outflows of money
 
+<!-- This is formatted strangely but automatically by Prettier. -->
 
-ohw-2020-11
+Here is the basic suggested skeleton for your app repo that each of the starter templates conforms to:
 
+```bash
+├── api
+│   ├── 
+│   │   ├──
+│   ├── 
+│   │   ├──
+│   ├── 
+│   │   ├──
+│   │   ├── 
+│   └── 
+├── mobile-client
+│   ├── 
+│   │   ├──
+│   ├── 
+│   │   ├──
+│   ├── 
+│   │   ├──
+│   │   ├── 
+│   └── 
+├── web-client
+│   ├── 
+│   │   ├──
+│   ├── 
+│   │   ├──
+│   ├── 
+│   │   ├──
+│   │   ├── 
+│   └── 
+├── README.md
+└── .gitignore
+```
