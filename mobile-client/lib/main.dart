@@ -1,4 +1,4 @@
-import 'package:budget_app/screens/home_screen.dart';
+import 'package:budget_app/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,7 +10,7 @@ class BudgetApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: WelcomeScreen(),
     );
   }
 }

@@ -23,7 +23,7 @@ final heading3Text = GoogleFonts.dmSans(
   color: themeGrey,
 );
 final heading4Text = GoogleFonts.dmSans(
-  fontSize: 12,
+  fontSize: 14,
   fontWeight: FontWeight.bold,
   color: themeGrey,
 );
