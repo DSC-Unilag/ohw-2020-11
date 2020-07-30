@@ -143,14 +143,6 @@ SIMPLE_JWT = {
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'accounts.models.EmailBackend']
 
-EMAIL_SUBJECT_PREFIX = ' [Budgito] '
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_PORT = 465
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'adewole.josh.mydjangotestmail@gmail.com'
-EMAIL_HOST_PASSWORD = 'mydjangotestmail'
-
 
 DOMAIN = 'http://localhost:8000/'
 # DOMAIN = ALLOWED_HOST[0]
