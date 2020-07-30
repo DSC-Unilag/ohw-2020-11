@@ -146,3 +146,80 @@ class ExpenseCard extends StatelessWidget {
     );
   }
 }
+
+
+
+class CustomLongButton extends StatelessWidget {
+  final String label;
+  final Function onTap;
+  final Color color;
+  final Color labelColor;
+
+  const CustomLongButton(
+      {@required this.label, @required this.onTap, this.color,this.labelColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints.tightFor(
+        height: 40,
+        width: double.infinity,
+      ),
+      margin: const EdgeInsets.symmetric(vertical: 16.0),
+      child: FlatButton(
+        padding: EdgeInsets.zero,
+        color: color ?? Style.themeWhite,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
+        onPressed: onTap,
+        child: Text(
+          label ?? '',
+          textAlign: TextAlign.center,
+          style: Style.heading4Text.copyWith(
+            color: labelColor?? Style.backgroundColor,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class CustomTextFormField extends StatelessWidget {
+  const CustomTextFormField({
+    Key key,
+    this.controller,
+    this.hintText,this.keyboardType
+  }) : super(key: key);
+  final TextEditingController controller;
+  final String hintText;
+  final TextInputType keyboardType;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      style: Style.labelText.copyWith(color: Style.themeWhite),
+      keyboardType: keyboardType,
+      obscureText: keyboardType == TextInputType.visiblePassword ? true : false,
+      controller: controller,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.zero,
+        hintText: hintText,
+        hintStyle: Style.labelText.copyWith(
+          color: Style.themeWhite.withOpacity(0.75),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Style.themeWhite.withOpacity(0.25),
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+              color: Style.themeWhite
+          ),
+        ),
+      ),
+    );
+  }
+}
