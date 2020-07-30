@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
-
+from .mixins import TokenValidationMixin
 from .tokens import account_activation_token
 
 
@@ -49,7 +49,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
         return user
 
 
-class UserActivationSerializer(serializers.Serializer):
+class UserActivationSerializer(TokenValidationMixin, serializers.Serializer):
     token_generator = account_activation_token
     uid = serializers.CharField(required=True)
     token = serializers.CharField(required=True)
