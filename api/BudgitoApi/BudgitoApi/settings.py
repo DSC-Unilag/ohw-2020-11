@@ -129,6 +129,8 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'accounts.models.EmailBackend',
+
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.'
     'LimitOffsetPagination',
@@ -139,6 +141,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=72),
 }
 
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'accounts.models.EmailBackend']
 
 EMAIL_SUBJECT_PREFIX = ' [Budgito] '
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

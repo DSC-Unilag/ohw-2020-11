@@ -61,7 +61,8 @@ class UserActivationView(APIView):
     Users accounts are activated via the mail sent
     """
     def post(self, request):
-        serializer = UserActivationSerializer(data=request.data)
+        user = request.data.get('user', {})
+        serializer = UserActivationSerializer(data=request.data, user=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(
