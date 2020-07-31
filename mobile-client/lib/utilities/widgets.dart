@@ -3,7 +3,7 @@ import 'package:budget_app/utilities/styles.dart' as Style;
 import 'package:budget_app/utilities/constants.dart' as Constant;
 
 class ScreenBackgroundGradient extends StatelessWidget {
-  ScreenBackgroundGradient({this.child, this.constraints});
+  ScreenBackgroundGradient({this.child, this.constraints, this.fill = 67});
 
   final Widget child;
   final BoxConstraints constraints;
@@ -13,10 +13,11 @@ class ScreenBackgroundGradient extends StatelessWidget {
     Style.themeWhite,
     Style.themeWhite,
   ];
+  final double fill;
 
   @override
   Widget build(BuildContext context) {
-    final double fillPercent = 67; // fills 67% for container from bottom
+    final double fillPercent = fill; // fills 67% for container from bottom
     final double fillStop = (100 - fillPercent) / 100;
     final List<double> stops = [0.0, fillStop, fillStop, 1.0];
     return Container(
@@ -60,11 +61,15 @@ class HomeBudgetCard extends StatelessWidget {
             "N200,000",
             style: Style.heading1Text.copyWith(color: Style.backgroundColor),
           ),
+          Text(
+            "+N10,000 income",
+            style: Style.labelText.copyWith(color: Colors.green),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "-N5,000 today",
+                "-N5,000 expense",
                 style: Style.labelText.copyWith(color: Style.themeRed),
               ),
               Container(
@@ -130,7 +135,7 @@ class ExpenseCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-               "$percentageLeft% left",
+                "$percentageLeft% left",
                 style: Style.heading4Text
                     .copyWith(color: Style.alternateTextColor),
               ),
@@ -147,8 +152,6 @@ class ExpenseCard extends StatelessWidget {
   }
 }
 
-
-
 class CustomLongButton extends StatelessWidget {
   final String label;
   final Function onTap;
@@ -156,7 +159,10 @@ class CustomLongButton extends StatelessWidget {
   final Color labelColor;
 
   const CustomLongButton(
-      {@required this.label, @required this.onTap, this.color,this.labelColor});
+      {@required this.label,
+      @required this.onTap,
+      this.color,
+      this.labelColor});
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +183,7 @@ class CustomLongButton extends StatelessWidget {
           label ?? '',
           textAlign: TextAlign.center,
           style: Style.heading4Text.copyWith(
-            color: labelColor?? Style.backgroundColor,
+            color: labelColor ?? Style.backgroundColor,
           ),
         ),
       ),
@@ -185,20 +191,23 @@ class CustomLongButton extends StatelessWidget {
   }
 }
 
-
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({
-    Key key,
-    this.controller,
-    this.hintText,this.keyboardType
-  }) : super(key: key);
+  const CustomTextFormField(
+      {Key key,
+      this.controller,
+      this.hintText,
+      this.keyboardType,
+      this.validator})
+      : super(key: key);
   final TextEditingController controller;
   final String hintText;
   final TextInputType keyboardType;
+  final Function(String) validator;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: validator,
       style: Style.labelText.copyWith(color: Style.themeWhite),
       keyboardType: keyboardType,
       obscureText: keyboardType == TextInputType.visiblePassword ? true : false,
@@ -215,8 +224,79 @@ class CustomTextFormField extends StatelessWidget {
           ),
         ),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-              color: Style.themeWhite
+          borderSide: BorderSide(color: Style.themeWhite),
+        ),
+      ),
+    );
+  }
+}
+
+class MenuButton extends StatelessWidget {
+  MenuButton({
+    this.pressed = false,
+    this.label,
+    @required this.onTap,
+  });
+
+  final bool pressed;
+  final String label;
+  final Function onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 24),
+        child: Column(
+          children: <Widget>[
+            Text(
+              label,
+              style: Style.heading2Text
+                  .copyWith(color: Style.themeWhite, fontSize: 23),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            if (pressed == true)
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: Constant.screenSize.width * 0.24),
+                child: Divider(
+                  thickness: 4,
+                  height: 0,
+                  color: Style.themeWhite,
+                ),
+              )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CustomShortButton extends StatelessWidget {
+  CustomShortButton({this.label, this.onTap});
+
+  final String label;
+  final Function onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        alignment: Alignment.center,
+        height: 50,
+        width: 100,
+        decoration: BoxDecoration(
+          color: Style.backgroundColor.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          label,
+          style: Style.heading4Text.copyWith(
+            color: Style.backgroundColor,
           ),
         ),
       ),

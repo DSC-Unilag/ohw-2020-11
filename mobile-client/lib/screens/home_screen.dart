@@ -1,3 +1,5 @@
+import 'package:budget_app/screens/menu_screen.dart';
+import 'package:budget_app/screens/profile_screen.dart';
 import 'package:budget_app/utilities/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,17 +27,33 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Icon(
-                      Icons.sort,
-                      size: 30,
-                      color: Style.themeWhite,
+                    InkResponse(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => MenuScreen(),
+                            ));
+                      },
+                      child: Icon(
+                        Icons.sort,
+                        size: 30,
+                        color: Style.themeWhite,
+                      ),
                     ),
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Style.themeGrey,
-                        shape: BoxShape.circle,
+                    InkResponse(
+                      onTap: (){
+                        Navigator.push(context, CupertinoPageRoute(
+                          builder: (context) => ProfileScreen(),
+                        ));
+                      },
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Style.themeGrey,
+                          shape: BoxShape.circle,
+                        ),
                       ),
                     ),
                   ],
