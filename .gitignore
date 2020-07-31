@@ -1,3 +1,5 @@
 .github
 mobile-client
 web-client
+api/accounts/migrations
+api/budget/migrations
