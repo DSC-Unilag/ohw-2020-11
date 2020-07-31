@@ -1,12 +1,23 @@
+import 'package:budget_app/Toast/toasts.dart';
+import 'package:budget_app/network/network.dart';
+import 'package:budget_app/screens/sign_in.dart';
 import 'package:budget_app/utilities/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_app/utilities/styles.dart' as Style;
 import 'package:budget_app/utilities/constants.dart' as Constant;
+import 'package:budget_app/models/user_model.dart';
 
 class SignUp extends StatelessWidget {
-  final TextEditingController fullNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final Api api = Api();
 
   @override
   Widget build(BuildContext context) {
@@ -35,31 +46,128 @@ class SignUp extends StatelessWidget {
                 style: Style.heading1Text.copyWith(color: Style.themeWhite),
               ),
               Spacer(),
-              CustomTextFormField(
-                controller: fullNameController,
-                hintText: 'Full Name ',
-                keyboardType: TextInputType.text,
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              CustomTextFormField(
-                controller: emailController,
-                hintText: 'Email address ',
-                keyboardType: TextInputType.emailAddress,
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              CustomTextFormField(
-                controller: passwordController,
-                hintText: 'Password ',
-                keyboardType: TextInputType.visiblePassword,
+              Form(
+                key: _signUpFormKey,
+                child: Column(
+                  children: <Widget>[
+                    CustomTextFormField(
+                      controller: _firstNameController,
+                      hintText: 'First Name ',
+                      keyboardType: TextInputType.text,
+                      validator: (String firstName) {
+                        if (firstName.isEmpty) {
+                          return 'Enter your First Name';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    CustomTextFormField(
+                      controller: _lastNameController,
+                      hintText: 'Last Name ',
+                      keyboardType: TextInputType.text,
+                      validator: (String lastName) {
+                        if (lastName.isEmpty) {
+                          return 'Enter your Last Name';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    CustomTextFormField(
+                      controller: _userNameController,
+                      hintText: 'username',
+                      keyboardType: TextInputType.text,
+                      validator: (String username) {
+                        if (username.isEmpty) {
+                          return 'Enter your username!!';
+                        } else if (username.length < 3) {
+                          return 'Username is too short!';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    CustomTextFormField(
+                      controller: _emailController,
+                      hintText: 'Email address ',
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (String email) {
+                        if (email.isEmpty) {
+                          return " Enter your email address!";
+                        } else if (!email.contains('.') ||
+                            !email.contains('@')) {
+                          return " Enter a valid email!";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    CustomTextFormField(
+                      controller: _passwordController,
+                      hintText: 'Password ',
+                      keyboardType: TextInputType.visiblePassword,
+                      validator: (String password) {
+                        if (password.length < 6) {
+                          return 'Password cannot be less than 6 characters';
+                        } else if (password.isEmpty) {
+                          return " Enter your password!";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    CustomTextFormField(
+                      controller: _confirmPasswordController,
+                      hintText: 'Confirm password ',
+                      keyboardType: TextInputType.visiblePassword,
+                      validator: (String confirmPassword) {
+                        if (confirmPassword != _passwordController.text) {
+                          return "Passwords do not match";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
               Spacer(),
               CustomLongButton(
-                onTap: () {
-                  //:Todo Implement account creation
+                onTap: () async {
+                  if (_signUpFormKey.currentState.validate()) {
+                    Indicator.loading(context);
+                    User newUser = User(
+                      firstName: _firstNameController.text.trim(),
+                      lastName: _lastNameController.text.trim(),
+                      username: _userNameController.text.trim(),
+                      email: _emailController.text.trim(),
+                      password: _passwordController.text.trim(),
+                      confirmPassword: _passwordController.text.trim(),
+                    );
+                    var signUp = await api.createAccount(newUser);
+                    print(signUp.toString());
+                    print("done");
+                    Navigator.pop(context);
+                    Navigator.push(context, CupertinoPageRoute(
+                      builder: (context) => SignIn(),
+                    ));
+                  }
                 },
                 label: 'create account',
               )
