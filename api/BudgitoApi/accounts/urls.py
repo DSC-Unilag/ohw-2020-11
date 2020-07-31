@@ -17,5 +17,5 @@ urlpatterns = [
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('', UserView.as_view()),
     path('me/', AuthUserDataView.as_view()),
-    path('activate/', UserActivationView.as_view()),
+    path('activate/<str:uid>/<str:token>/', UserActivationView.as_view()),
 ]

@@ -144,6 +144,3 @@ SIMPLE_JWT = {
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'accounts.models.EmailBackend']
 
-
-DOMAIN = 'http://localhost:8000/'
-# DOMAIN = ALLOWED_HOST[0]

@@ -10,7 +10,7 @@ budgito.herokuapp.com/api/accounts/
         
 'activate/' - When the user clicks the link the user's id is collected as well as the token.
              Link in Mail looks like 
-             http://budgito.herokuapp.com/activate/<user_id> as bytes/token
+             https://budgito.herokuapp.com/activate/<user_id> as bytes/token
              
                 -Needed
                 user id and token gotten from link and passed through this endpoint
