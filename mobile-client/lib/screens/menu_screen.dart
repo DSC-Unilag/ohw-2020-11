@@ -1,4 +1,6 @@
+import 'package:budget_app/screens/home_screen.dart';
 import 'package:budget_app/utilities/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_app/utilities/styles.dart' as Style;
 import 'package:budget_app/utilities/constants.dart' as Constant;
@@ -43,7 +45,10 @@ class MenuScreen extends StatelessWidget {
               ),
               Spacer(),
               MenuButton(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushReplacement(context,
+                      CupertinoPageRoute(builder: (context) => HomeScreen()));
+                },
                 label: 'Budgets',
               ),
               MenuButton(

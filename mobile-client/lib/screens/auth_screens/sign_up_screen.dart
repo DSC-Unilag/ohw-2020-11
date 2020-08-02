@@ -1,6 +1,6 @@
 import 'package:budget_app/Toast/toasts.dart';
 import 'package:budget_app/network/network.dart';
-import 'package:budget_app/screens/sign_in.dart';
+import 'package:budget_app/screens/auth_screens/sign_in.dart';
 import 'package:budget_app/utilities/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -160,13 +160,22 @@ class SignUp extends StatelessWidget {
                       password: _passwordController.text.trim(),
                       confirmPassword: _passwordController.text.trim(),
                     );
-                    var signUp = await api.createAccount(newUser);
-                    print(signUp.toString());
-                    print("done");
-                    Navigator.pop(context);
-                    Navigator.push(context, CupertinoPageRoute(
-                      builder: (context) => SignIn(),
-                    ));
+                    try {
+                      var signUp = await api.createAccount(newUser);
+                      print(signUp.toString());
+                      print("done");
+                      Navigator.pop(context);
+                       Indicator.snackBarMessage(context,
+                          "Account successfully created\nPlease check your mail to activate your account");
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => SignIn(),
+                          ));
+                    } catch (e) {
+                      print(e.toString());
+                      Navigator.pop(context);
+                    }
                   }
                 },
                 label: 'create account',
@@ -178,3 +187,15 @@ class SignUp extends StatelessWidget {
     );
   }
 }
+
+///SIGN UP RESPONSE EXAMPLE
+//I/flutter (18006): {
+// "detail": "account created subject to activation",
+// "user_data":{
+// "id":8,
+// "email":"gabrielolamideakorede@gmail.com",
+// "first_name":"Olamide",
+// "last_name":"Gabriel"
+// }
+// }
+
