@@ -1,22 +1,49 @@
+import 'package:budget_app/screens/add_expense_screen.dart';
+import 'package:budget_app/screens/add_income_screen.dart';
 import 'package:budget_app/screens/menu_screen.dart';
 import 'package:budget_app/screens/profile_screen.dart';
 import 'package:budget_app/utilities/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_app/utilities/styles.dart' as Style;
+import 'package:flutter_fab_dialer/flutter_fab_dialer.dart';
 
 class HomeScreen extends StatelessWidget {
+  fabMenuItems(BuildContext context) {
+    return [
+      FabMiniMenuItem.withText(
+          Icon(Icons.add), Style.darkBlue, 2, "Button menu", () {
+        Navigator.push(context, CupertinoPageRoute(
+          builder: (context) => AddIncome()
+        ));
+      }, "New income", Style.darkBlue, Style.themeWhite, false),
+      FabMiniMenuItem.withText(
+          Icon(Icons.add),
+          Style.darkBlue,
+          2,
+          "Button menu",
+          () {
+            Navigator.push(context, CupertinoPageRoute(
+              builder: (context) => AddExpense()
+            ));
+          },
+          "New expense",
+          Style.darkBlue,
+          Style.themeWhite,
+          false),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Style.backgroundColor,
-        child: Icon(
-          Icons.add,
-          color: Style.themeWhite,
-        ),
-      ),
+      floatingActionButton: FabDialer(
+          fabMenuItems(context),
+          Style.darkBlue,
+          Icon(
+            Icons.add,
+            color: Style.themeWhite,
+          )),
       body: ScreenBackgroundGradient(
         child: SingleChildScrollView(
           child: Padding(
@@ -42,10 +69,12 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     InkResponse(
-                      onTap: (){
-                        Navigator.push(context, CupertinoPageRoute(
-                          builder: (context) => ProfileScreen(),
-                        ));
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => ProfileScreen(),
+                            ));
                       },
                       child: Container(
                         width: 50,
