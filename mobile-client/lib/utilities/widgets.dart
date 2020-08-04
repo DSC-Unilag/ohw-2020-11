@@ -1,3 +1,5 @@
+import 'package:budget_app/screens/edit_categories.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_app/utilities/styles.dart' as Style;
 import 'package:budget_app/utilities/constants.dart' as Constant;
@@ -72,20 +74,66 @@ class HomeBudgetCard extends StatelessWidget {
                 "-N5,000 expense",
                 style: Style.labelText.copyWith(color: Style.themeRed),
               ),
-              Container(
-                padding: EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Style.backgroundColor.withOpacity(0.1)),
-                child: Icon(
-                  Icons.more_horiz,
-                  color: Style.backgroundColor,
+              InkWell(
+                onTap: (){
+                  Navigator.push(context, CupertinoPageRoute(
+                    builder: (context) => EditCategories(),
+                  ));
+                },
+                child: Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Style.backgroundColor.withOpacity(0.1)),
+                  child: Icon(
+                    Icons.more_horiz,
+                    color: Style.backgroundColor,
+                  ),
                 ),
               )
             ],
           )
         ],
       ),
+    );
+  }
+}
+
+
+class CustomAppBar extends StatelessWidget {
+  const CustomAppBar({
+    Key key,this.title,
+  }) : super(key: key);
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Style.backgroundColor,
+      width: double.infinity,
+      alignment: Alignment.bottomCenter,
+      padding: EdgeInsets.fromLTRB(24, 0, 24, 24),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          InkWell(
+            onTap: (){Navigator.pop(context);},
+            child: Icon(
+              Icons.arrow_back,
+              size: 30,
+              color: Style.themeWhite,
+            ),
+          ),
+          Spacer(),
+          Text(
+            title,
+            style:
+            Style.heading3Text.copyWith(color: Style.themeWhite),
+          ),
+          Spacer()
+        ],
+      ),
+      height: Constant.screenSize.height * 0.2,
     );
   }
 }
@@ -191,6 +239,38 @@ class CustomLongButton extends StatelessWidget {
   }
 }
 
+class CustomMediumSizedButton extends StatelessWidget {
+  CustomMediumSizedButton({this.onTap, this.label});
+
+  final Function onTap;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints.tightFor(
+        height: 40,
+      ),
+      margin: const EdgeInsets.symmetric(vertical: 16.0),
+      child: FlatButton(
+        padding: EdgeInsets.symmetric(horizontal: 8),
+        color: Style.darkBlue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
+        onPressed: onTap,
+        child: Text(
+          label ?? '',
+          textAlign: TextAlign.center,
+          style: Style.heading4Text.copyWith(
+            color: Style.themeWhite,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField(
       {Key key,
@@ -276,10 +356,12 @@ class MenuButton extends StatelessWidget {
 }
 
 class CustomShortButton extends StatelessWidget {
-  CustomShortButton({this.label, this.onTap});
+  CustomShortButton({this.label, this.onTap,this.color,this.labelColor});
 
   final String label;
   final Function onTap;
+  final Color labelColor;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -288,15 +370,55 @@ class CustomShortButton extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         height: 50,
-        width: 100,
+        padding: EdgeInsets.symmetric(horizontal: 15),
+     //   width: 100,
         decoration: BoxDecoration(
-          color: Style.backgroundColor.withOpacity(0.1),
+          color: color??Style.backgroundColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           label,
           style: Style.heading4Text.copyWith(
-            color: Style.backgroundColor,
+            color: labelColor??Style.backgroundColor,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class CustomAdditionTextField extends StatelessWidget {
+  const CustomAdditionTextField(
+      {Key key,
+        this.textStyle,
+        this.hintStyle,
+        this.hintText,
+        this.keyboardType})
+      : super(key: key);
+  final TextStyle hintStyle;
+  final TextStyle textStyle;
+  final String hintText;
+  final TextInputType keyboardType;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: Constant.screenSize.width * 0.4,
+      child: TextFormField(
+        keyboardType: keyboardType,
+        style: textStyle,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.only(left: 20, top: 0, bottom: 0),
+          hintText: hintText,
+          hintStyle: hintStyle,
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Style.alternateTextColor.withOpacity(0.25),
+            ),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Style.alternateTextColor),
           ),
         ),
       ),

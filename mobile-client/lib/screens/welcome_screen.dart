@@ -1,10 +1,12 @@
-import 'package:budget_app/screens/sign_in.dart';
-import 'package:budget_app/screens/sign_up_screen.dart';
+
 import 'package:budget_app/utilities/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_app/utilities/styles.dart' as Style;
 import 'package:budget_app/utilities/constants.dart' as Constant;
+
+import 'auth_screens/sign_in.dart';
+import 'auth_screens/sign_up_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override
