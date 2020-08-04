@@ -22,6 +22,7 @@ urlpatterns = [
     path('auth/', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
     path('api/accounts/', include('accounts.urls')),
+    path('api/budget/', include('budget.urls')),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='Budget-Go API'),  # Doc with swagger schema
     path('api/redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='Budget-Go API'),  # Doc with redoc schema
     path('api/docs/', include_docs_urls(title='Budget-Go API')),  # Core API doc

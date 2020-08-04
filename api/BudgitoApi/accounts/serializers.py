@@ -1,29 +1,11 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.settings import api_settings
 from .mixins import TokenValidationMixin
 from .tokens import account_activation_token
-
-
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_tokens(self, user):
-        refresh = self.get_token(user)
-
-        return {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-            'expires': int(api_settings.ACCESS_TOKEN_LIFETIME.total_seconds()),
-            'userData': UserSerializer(user).data,
-        }
-
-    def validate(self, attrs):
-        data = super().validate(attrs)
-
-        expires = api_settings.ACCESS_TOKEN_LIFETIME
-        data['expires'] = int(expires.total_seconds())
-        return data
+from budget.serializers import (
+    CRUDIncomeSerializer,
+    CRUDExpenseSerializer,
+)
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
@@ -34,8 +16,26 @@ class CreateUserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email', 'username', 'first_name', 'last_name', 'password', 'confirm_password')
 
+    def validate_email(self, email):
+        existing = User.objects.filter(email=email).first()
+        if existing:
+            if existing.is_active:
+                raise serializers.ValidationError(
+                    "Someone with that Email Address has already registered."
+                )
+        return email
+
+    def validate_username(self, username):
+        existing = User.objects.filter(username=username).first()
+        if existing:
+            if existing.is_active:
+                raise serializers.ValidationError(
+                    "Someone with that Username has already registered."
+                )
+        return username
+
     def validate(self, data):
-        if data['password'] != data['confirm_password']:
+        if data.get('password') != data.get('confirm_password'):
             raise serializers.ValidationError(
                 {'confirm_password': 'password does not match'}
             )
@@ -61,10 +61,14 @@ class UserActivationSerializer(TokenValidationMixin, serializers.Serializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    income = CRUDIncomeSerializer(many=True, read_only=True)
+    expense = CRUDExpenseSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name')
+        fields = (
+            'id', 'email', 'first_name', 'last_name', 'income', 'expense',
+        )
 
 
 class UpdateUserSerializer(serializers.ModelSerializer):

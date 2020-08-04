@@ -1,5 +1,4 @@
 from smtplib import SMTPAuthenticationError
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
@@ -16,6 +15,14 @@ from .tokens import account_activation_token
 class UserView(APIView):
     def post(self, request):
         email = request.data.get('email')
+        username = request.data.get('username')
+        if username:
+            try:
+                user = User.objects.get(username__iexact=username)
+                if user.is_active is False:
+                    user.delete()
+            except User.DoesNotExist:
+                pass
         if email:
             try:
                 user = User.objects.get(email__iexact=email)
@@ -26,7 +33,6 @@ class UserView(APIView):
         serializer = CreateUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save(is_active=False)
-        # domain = settings.DOMAIN
         domain = get_current_site(request)
         mail_subject = 'Activate your Budgito account'
         message = render_to_string('account_activation_email.html', {
@@ -60,7 +66,7 @@ class UserActivationView(APIView):
     """
     Users accounts are activated via the mail sent
     """
-    def post(self, uid, token):
+    def get(self, request, uid, token):
         data = {'uid': uid, 'token': token}
         serializer = UserActivationSerializer(data=data)
         serializer.is_valid(raise_exception=True)
