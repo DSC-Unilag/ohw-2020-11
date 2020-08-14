@@ -1,11 +1,16 @@
+import 'package:budget_app/models/category_model.dart';
+import 'package:budget_app/provider/budget_data.dart';
 import 'package:budget_app/utilities/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:budget_app/utilities/styles.dart' as Style;
 import 'package:budget_app/utilities/constants.dart' as Constant;
+import 'package:provider/provider.dart';
 
 class AddExpense extends StatelessWidget {
   final GlobalKey<FormState> _addExpenseFormKey = GlobalKey<FormState>();
+  final TextEditingController _expenseAmountController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +40,7 @@ class AddExpense extends StatelessWidget {
                       height: 8,
                     ),
                     CustomAdditionTextField(
+                      controller: _expenseAmountController,
                       hintText: 'Amount',
                       textStyle: Style.heading2Text
                           .copyWith(color: Style.backgroundColor),
@@ -99,7 +105,11 @@ class AddExpense extends StatelessWidget {
               Spacer(),
               CustomMediumSizedButton(
                 label: "Add to records",
-                onTap: () {},
+                onTap: () {
+                  Provider.of<BudgetData>(context, listen: false).addNewExpense(
+                      _expenseAmountController.text.trim(), transport);
+                  Navigator.pop(context);
+                },
               ),
               SizedBox(
                 height: 24,

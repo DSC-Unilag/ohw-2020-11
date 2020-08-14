@@ -32,6 +32,7 @@ dependencies:
   http: ^0.12.2
   fluttertoast: ^7.0.2
   flutter_fab_dialer: ^0.1.1
+  provider: ^4.3.2
 
 
 

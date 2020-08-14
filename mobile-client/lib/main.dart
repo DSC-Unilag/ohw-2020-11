@@ -1,9 +1,12 @@
+import 'package:budget_app/provider/budget_data.dart';
 import 'package:budget_app/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(BudgetApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => BudgetData(), child: BudgetApp()));
 }
 
 class BudgetApp extends StatelessWidget {

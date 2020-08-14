@@ -1,8 +1,12 @@
+import 'package:budget_app/models/category_model.dart';
+import 'package:budget_app/models/expenditure_model.dart';
+import 'package:budget_app/provider/budget_data.dart';
 import 'package:budget_app/screens/edit_categories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_app/utilities/styles.dart' as Style;
 import 'package:budget_app/utilities/constants.dart' as Constant;
+import 'package:provider/provider.dart';
 
 class ScreenBackgroundGradient extends StatelessWidget {
   ScreenBackgroundGradient({this.child, this.constraints, this.fill = 67});
@@ -38,9 +42,12 @@ class ScreenBackgroundGradient extends StatelessWidget {
 }
 
 class HomeBudgetCard extends StatelessWidget {
-  const HomeBudgetCard({
-    Key key,
-  }) : super(key: key);
+  const HomeBudgetCard(
+      {Key key, this.totalBalance, this.totalExpense, this.totalIncome})
+      : super(key: key);
+  final double totalBalance;
+  final double totalIncome;
+  final double totalExpense;
 
   @override
   Widget build(BuildContext context) {
@@ -60,25 +67,27 @@ class HomeBudgetCard extends StatelessWidget {
             style: Style.labelText.copyWith(color: Style.alternateTextColor),
           ),
           Text(
-            "N200,000",
+            "${totalBalance ?? 0}",
             style: Style.heading1Text.copyWith(color: Style.backgroundColor),
           ),
           Text(
-            "+N10,000 income",
+            "+N${totalIncome ?? 0} income",
             style: Style.labelText.copyWith(color: Colors.green),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "-N5,000 expense",
+                "-N${totalExpense ?? 0}expense",
                 style: Style.labelText.copyWith(color: Style.themeRed),
               ),
               InkWell(
-                onTap: (){
-                  Navigator.push(context, CupertinoPageRoute(
-                    builder: (context) => EditCategories(),
-                  ));
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => EditCategories(),
+                      ));
                 },
                 child: Container(
                   padding: EdgeInsets.all(2),
@@ -99,10 +108,10 @@ class HomeBudgetCard extends StatelessWidget {
   }
 }
 
-
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
-    Key key,this.title,
+    Key key,
+    this.title,
   }) : super(key: key);
   final String title;
 
@@ -117,7 +126,9 @@ class CustomAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           InkWell(
-            onTap: (){Navigator.pop(context);},
+            onTap: () {
+              Navigator.pop(context);
+            },
             child: Icon(
               Icons.arrow_back,
               size: 30,
@@ -127,8 +138,7 @@ class CustomAppBar extends StatelessWidget {
           Spacer(),
           Text(
             title,
-            style:
-            Style.heading3Text.copyWith(color: Style.themeWhite),
+            style: Style.heading3Text.copyWith(color: Style.themeWhite),
           ),
           Spacer()
         ],
@@ -142,14 +152,12 @@ class ExpenseCard extends StatelessWidget {
   const ExpenseCard(
       {Key key,
       @required this.amountRemaining,
-      @required this.amountSpent,
-      @required this.category,
+      @required this.expenditure,
       @required this.percentageLeft})
       : super(key: key);
-  final String category;
   final String percentageLeft;
   final String amountRemaining;
-  final String amountSpent;
+  final Expenditure expenditure;
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +175,7 @@ class ExpenseCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                category,
+                expenditure.category.name,
                 style: Style.labelText.copyWith(color: Style.darkBlue),
               ),
               Text(
@@ -188,7 +196,7 @@ class ExpenseCard extends StatelessWidget {
                     .copyWith(color: Style.alternateTextColor),
               ),
               Text(
-                'N$amountSpent spent',
+                'N${expenditure.amount} spent',
                 style: Style.heading4Text
                     .copyWith(color: Style.alternateTextColor),
               ),
@@ -356,7 +364,7 @@ class MenuButton extends StatelessWidget {
 }
 
 class CustomShortButton extends StatelessWidget {
-  CustomShortButton({this.label, this.onTap,this.color,this.labelColor});
+  CustomShortButton({this.label, this.onTap, this.color, this.labelColor});
 
   final String label;
   final Function onTap;
@@ -371,15 +379,15 @@ class CustomShortButton extends StatelessWidget {
         alignment: Alignment.center,
         height: 50,
         padding: EdgeInsets.symmetric(horizontal: 15),
-     //   width: 100,
+        //   width: 100,
         decoration: BoxDecoration(
-          color: color??Style.backgroundColor.withOpacity(0.1),
+          color: color ?? Style.backgroundColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           label,
           style: Style.heading4Text.copyWith(
-            color: labelColor??Style.backgroundColor,
+            color: labelColor ?? Style.backgroundColor,
           ),
         ),
       ),
@@ -387,25 +395,27 @@ class CustomShortButton extends StatelessWidget {
   }
 }
 
-
 class CustomAdditionTextField extends StatelessWidget {
   const CustomAdditionTextField(
       {Key key,
-        this.textStyle,
-        this.hintStyle,
-        this.hintText,
-        this.keyboardType})
+      this.textStyle,
+      this.hintStyle,
+      this.hintText,
+      this.controller,
+      this.keyboardType})
       : super(key: key);
   final TextStyle hintStyle;
   final TextStyle textStyle;
   final String hintText;
   final TextInputType keyboardType;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: Constant.screenSize.width * 0.4,
       child: TextFormField(
+        controller: controller,
         keyboardType: keyboardType,
         style: textStyle,
         decoration: InputDecoration(
@@ -423,5 +433,44 @@ class CustomAdditionTextField extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class NewExpenditureDropDown extends StatefulWidget {
+  @override
+  _NewExpenditureDropDownState createState() => _NewExpenditureDropDownState();
+}
+
+class _NewExpenditureDropDownState extends State<NewExpenditureDropDown> {
+  Category selectedCategory = transport;
+  List<DropdownMenuItem> categories = [];
+
+  List<DropdownMenuItem> getDropdownMenuItems(BuildContext context) {
+    //:Todo change this once you have data and implement provider package
+    for (Category category in Provider.of<BudgetData>(context).allCategories) {
+      DropdownMenuItem dropdownMenuItem = DropdownMenuItem(
+        child: Text(category.name),
+        value: category,
+      );
+      categories.add(dropdownMenuItem);
+    }
+    return categories;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton(
+        icon: Icon(
+          Icons.keyboard_arrow_down,
+          color: Style.backgroundColor,
+          size: 30,
+        ),
+        value: selectedCategory,
+        onChanged: (value) {
+          setState(() {
+            selectedCategory = value;
+          });
+        },
+        items: getDropdownMenuItems(context));
   }
 }

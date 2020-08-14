@@ -1,4 +1,5 @@
 import 'package:budget_app/models/category_model.dart';
+import 'package:budget_app/provider/budget_data.dart';
 import 'package:budget_app/utilities/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,18 +20,17 @@ class EditCategories extends StatelessWidget {
             height: 48,
           ),
           //TO be replaced with ListView.separated
-          CategoryCard(
-            category: transport,
-          ),
-          CategoryCard(
-            category: transport,
-          ),
-          CategoryCard(
-            category: transport,
-          ),
-          CategoryCard(
-            category: transport,
-          ),
+          Expanded(
+            child: ListView.separated(
+                padding: EdgeInsets.zero,
+                itemBuilder: (context, index) {
+                  return CategoryCard(
+                    category: BudgetData().allCategories[index],
+                  );
+                },
+                separatorBuilder: (context, index) => Divider(),
+                itemCount: BudgetData().allCategories.length),
+          )
         ],
       ),
     );

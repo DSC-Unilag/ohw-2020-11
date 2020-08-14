@@ -1,11 +1,15 @@
+import 'package:budget_app/models/category_model.dart';
+import 'package:budget_app/provider/budget_data.dart';
 import 'package:budget_app/utilities/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:budget_app/utilities/constants.dart' as Constant;
 import 'package:budget_app/utilities/styles.dart' as Style;
+import 'package:provider/provider.dart';
 
 class AddIncome extends StatelessWidget {
   final GlobalKey<FormState> _addIncomeFormKey = GlobalKey<FormState>();
+  final TextEditingController _incomeAmountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +20,9 @@ class AddIncome extends StatelessWidget {
           constraints: BoxConstraints.tight(Constant.screenSize),
           child: Column(
             children: <Widget>[
-             CustomAppBar(
-               title: "Add Income",
-             ),
+              CustomAppBar(
+                title: "Add Income",
+              ),
               SizedBox(
                 height: 48,
               ),
@@ -35,6 +39,7 @@ class AddIncome extends StatelessWidget {
                       height: 8,
                     ),
                     CustomAdditionTextField(
+                      controller: _incomeAmountController,
                       hintText: 'Amount',
                       textStyle: Style.heading2Text
                           .copyWith(color: Style.backgroundColor),
@@ -53,26 +58,6 @@ class AddIncome extends StatelessWidget {
                     ),
                     SizedBox(
                       height: 16,
-                    ),
-                    DropdownButton(
-                      icon: Icon(
-                        Icons.keyboard_arrow_down,
-                        color: Style.backgroundColor,
-                        size: 30,
-                      ),
-                      value: "Income",
-                      onChanged: (value) {},
-                      items: [
-                        //To be built from a list of categories
-                        DropdownMenuItem(
-                          child: Text(
-                            'Income',
-                            style: Style.heading2Text
-                                .copyWith(color: Style.backgroundColor),
-                          ),
-                          value: "Income",
-                        )
-                      ],
                     ),
                     SizedBox(
                       height: 24,
@@ -99,7 +84,11 @@ class AddIncome extends StatelessWidget {
               Spacer(),
               CustomMediumSizedButton(
                 label: "Add to records",
-                onTap: () {},
+                onTap: () {
+                  Provider.of<BudgetData>(context, listen: false).addNewIncome(
+                      _incomeAmountController.text.trim(), transport);
+                  Navigator.pop(context);
+                },
               ),
               SizedBox(
                 height: 24,
