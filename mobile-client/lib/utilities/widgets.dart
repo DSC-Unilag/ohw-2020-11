@@ -110,7 +110,7 @@ class HomeBudgetCard extends StatelessWidget {
 }
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
-  const CustomAppBar({
+  CustomAppBar({
     Key key,
     this.title,
   }) : super(key: key);

@@ -4,7 +4,7 @@
     <list default="true" id="4e2c52c9-af05-43c8-88d7-1af217110a99" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/edit_categories.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/edit_categories.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utilities/widgets.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utilities/widgets.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
