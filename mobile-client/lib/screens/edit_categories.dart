@@ -14,14 +14,24 @@ class EditCategories extends StatelessWidget {
       appBar: CustomAppBar(
         title: 'Edit Categories',
       ),
-      body: ListView.separated(
-          itemBuilder: (context, index) {
-            return CategoryCard(
-              category: BudgetData().allCategories[index],
-            );
-          },
-          separatorBuilder: (context, index) => Divider(),
-          itemCount: BudgetData().allCategories.length),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.separated(
+                itemBuilder: (context, index) {
+                  return CategoryCard(
+                    category: BudgetData().allCategories[index],
+                  );
+                },
+                separatorBuilder: (context, index) => Divider(),
+                itemCount: BudgetData().allCategories.length),
+          ),
+          CustomMediumSizedButton(
+            label: "Add Category",
+            onTap: () async {},
+          )
+        ],
+      ),
     );
   }
 }
