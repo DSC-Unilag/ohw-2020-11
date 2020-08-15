@@ -11,7 +11,8 @@ class BudgetData extends ChangeNotifier {
   List<Category.Category> allCategories = [
     Category.transport,
     Category.transport,
-    Category.transport
+    Category.transport,
+    Category.food,
   ];
 
   addNewIncome(String amount, Category.Category category) {
@@ -38,8 +39,10 @@ class BudgetData extends ChangeNotifier {
     notifyListeners();
   }
 
-  addNewCategory(Category.Category category) {
-    allCategories.add(category);
+  addNewCategory(String name, String description) {
+    Category.Category newCategory =
+        Category.Category(name: name, description: description);
+    allCategories.add(newCategory);
     notifyListeners();
   }
 }

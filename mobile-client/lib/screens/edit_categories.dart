@@ -11,28 +11,17 @@ class EditCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     Constant.screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          CustomAppBar(
-            title: 'Edit Categories',
-          ),
-          SizedBox(
-            height: 48,
-          ),
-          //TO be replaced with ListView.separated
-          Expanded(
-            child: ListView.separated(
-                padding: EdgeInsets.zero,
-                itemBuilder: (context, index) {
-                  return CategoryCard(
-                    category: BudgetData().allCategories[index],
-                  );
-                },
-                separatorBuilder: (context, index) => Divider(),
-                itemCount: BudgetData().allCategories.length),
-          )
-        ],
+      appBar: CustomAppBar(
+        title: 'Edit Categories',
       ),
+      body: ListView.separated(
+          itemBuilder: (context, index) {
+            return CategoryCard(
+              category: BudgetData().allCategories[index],
+            );
+          },
+          separatorBuilder: (context, index) => Divider(),
+          itemCount: BudgetData().allCategories.length),
     );
   }
 }

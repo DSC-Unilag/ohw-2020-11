@@ -4,6 +4,7 @@ class Expenditure {
   double amount;
   expenditureType type;
   Category category;
+
   Expenditure({this.amount, this.category, this.type});
 }
 

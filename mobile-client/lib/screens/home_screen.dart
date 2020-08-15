@@ -37,14 +37,14 @@ class HomeScreen extends StatelessWidget {
             color: Style.themeWhite,
           )),
       body: ScreenBackgroundGradient(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(24, 60, 24, 16),
-          child: Consumer<BudgetData>(
-            builder: (context, budgetData, child) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
+        child: Consumer<BudgetData>(
+          builder: (context, budgetData, child) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(24, 60, 24, 0),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       InkResponse(
@@ -80,34 +80,41 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Text(
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
                     "Budgets",
                     style: Style.heading2Text.copyWith(color: Style.themeWhite),
                   ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  HomeBudgetCard(
-                    totalBalance: budgetData.totalBalance,
-                    totalExpense: budgetData.totalExpense,
-                    totalIncome: budgetData.totalIncome,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                        itemBuilder: (context, index) => ExpenseCard(
-                              amountRemaining: "50000",
-                              percentageLeft: "54",
-                              expenditure: budgetData.allExpenditure[index],
-                            ),
-                        itemCount: budgetData.allExpenditure.length),
-                  ),
-                ],
-              );
-            },
-          ),
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                HomeBudgetCard(
+                  totalBalance: budgetData.totalBalance,
+                  totalExpense: budgetData.totalExpense,
+                  totalIncome: budgetData.totalIncome,
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (context, index) => ExpenseCard(
+                            amountRemaining: "50000",
+                            percentageLeft: "54",
+                            expenditure: budgetData.allExpenditure[index],
+                          ),
+                      itemCount: budgetData.allExpenditure.length),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

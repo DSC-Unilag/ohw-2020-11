@@ -52,6 +52,7 @@ class HomeBudgetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 24),
       padding: EdgeInsets.all(24),
       width: double.infinity,
       decoration: BoxDecoration(
@@ -78,7 +79,7 @@ class HomeBudgetCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "-N${totalExpense ?? 0}expense",
+                "-N${totalExpense ?? 0} expense",
                 style: Style.labelText.copyWith(color: Style.themeRed),
               ),
               InkWell(
@@ -108,7 +109,7 @@ class HomeBudgetCard extends StatelessWidget {
   }
 }
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   const CustomAppBar({
     Key key,
     this.title,
@@ -143,9 +144,12 @@ class CustomAppBar extends StatelessWidget {
           Spacer()
         ],
       ),
-      height: Constant.screenSize.height * 0.2,
     );
   }
+
+  @override
+  Size get preferredSize =>
+      Size(Constant.screenSize.width, Constant.screenSize.height * 0.15);
 }
 
 class ExpenseCard extends StatelessWidget {
@@ -163,7 +167,7 @@ class ExpenseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(top: 24),
+      margin: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       decoration: BoxDecoration(
           color: Style.themeWhite,
@@ -196,9 +200,11 @@ class ExpenseCard extends StatelessWidget {
                     .copyWith(color: Style.alternateTextColor),
               ),
               Text(
-                'N${expenditure.amount} spent',
-                style: Style.heading4Text
-                    .copyWith(color: Style.alternateTextColor),
+                'N${expenditure.amount} ${expenditure.type == expenditureType.income ? "earned" : "spent"}',
+                style: Style.heading4Text.copyWith(
+                    color: expenditure.type == expenditureType.income
+                        ? Colors.green
+                        : Style.themeRed),
               ),
             ],
           ),
@@ -402,13 +408,15 @@ class CustomAdditionTextField extends StatelessWidget {
       this.hintStyle,
       this.hintText,
       this.controller,
-      this.keyboardType})
+      this.keyboardType,
+      this.validator})
       : super(key: key);
   final TextStyle hintStyle;
   final TextStyle textStyle;
   final String hintText;
   final TextInputType keyboardType;
   final TextEditingController controller;
+  final Function(String) validator;
 
   @override
   Widget build(BuildContext context) {
@@ -416,6 +424,7 @@ class CustomAdditionTextField extends StatelessWidget {
       width: Constant.screenSize.width * 0.4,
       child: TextFormField(
         controller: controller,
+        validator: validator,
         keyboardType: keyboardType,
         style: textStyle,
         decoration: InputDecoration(
@@ -436,41 +445,75 @@ class CustomAdditionTextField extends StatelessWidget {
   }
 }
 
-class NewExpenditureDropDown extends StatefulWidget {
+class CategoryDropdownButton extends StatelessWidget {
+  CategoryDropdownButton({@required this.category, this.onTap});
+  final Category category;
+  final Function onTap;
   @override
-  _NewExpenditureDropDownState createState() => _NewExpenditureDropDownState();
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                category.name,
+                style:
+                    Style.heading2Text.copyWith(color: Style.backgroundColor),
+              ),
+              Icon(
+                Icons.keyboard_arrow_down,
+                color: Style.backgroundColor,
+                size: 30,
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 100),
+            child: Divider(),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-class _NewExpenditureDropDownState extends State<NewExpenditureDropDown> {
-  Category selectedCategory = transport;
-  List<DropdownMenuItem> categories = [];
+class CustomDropdown extends StatefulWidget {
+  const CustomDropdown({
+    Key key,
+  }) : super(key: key);
 
-  List<DropdownMenuItem> getDropdownMenuItems(BuildContext context) {
-    //:Todo change this once you have data and implement provider package
+  @override
+  _CustomDropdownState createState() => _CustomDropdownState();
+}
+
+class _CustomDropdownState extends State<CustomDropdown> {
+  List<CustomLongButton> categoryButtons = [];
+  Category selectedCategory = transport;
+  getDropdown() {
     for (Category category in Provider.of<BudgetData>(context).allCategories) {
-      DropdownMenuItem dropdownMenuItem = DropdownMenuItem(
-        child: Text(category.name),
-        value: category,
-      );
-      categories.add(dropdownMenuItem);
+      CustomLongButton newDropdown = CustomLongButton(
+          label: category.name,
+          onTap: () {
+            setState(() {
+              selectedCategory = category;
+            });
+            Navigator.pop(context, selectedCategory);
+          });
+      categoryButtons.add(newDropdown);
     }
-    return categories;
+    return categoryButtons;
   }
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton(
-        icon: Icon(
-          Icons.keyboard_arrow_down,
-          color: Style.backgroundColor,
-          size: 30,
-        ),
-        value: selectedCategory,
-        onChanged: (value) {
-          setState(() {
-            selectedCategory = value;
-          });
-        },
-        items: getDropdownMenuItems(context));
+    return Container(
+      child: ListView(
+        children: getDropdown(),
+      ),
+    );
   }
 }
