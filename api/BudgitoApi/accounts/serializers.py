@@ -67,7 +67,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'id', 'email', 'first_name', 'last_name', 'income', 'expense',
+            'id', 'username', 'email', 'first_name', 'last_name', 'income', 'expense',
         )
 
 
@@ -75,9 +75,10 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name')
+        fields = ('username', 'email', 'first_name', 'last_name')
 
     def update(self, instance, validated_data):
+        instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('email', instance.email)
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)

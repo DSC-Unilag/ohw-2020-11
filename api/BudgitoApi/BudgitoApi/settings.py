@@ -1,5 +1,4 @@
 import os
-from datetime import timedelta
 from uuid import uuid4
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -34,9 +33,11 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     # 'rest_framework_swagger',
     'drf_yasg',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -126,7 +127,11 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
 PASSWORD_RESET_TIMEOUT_DAYS = 2
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'accounts.models.EmailBackend']
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

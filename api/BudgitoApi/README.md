@@ -118,7 +118,7 @@ for viewing summation of incomes of the current month
     
 for viewing expense of the current month
 
-    path('expense/latest-month/', BudgetExpenseLatestView.as_view()),
+    'expense/latest-month/'
    
 for viewing expense of the previous month 
 

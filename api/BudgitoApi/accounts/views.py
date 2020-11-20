@@ -1,7 +1,8 @@
 from smtplib import SMTPAuthenticationError
 from django.contrib.auth.models import User
-from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.sites.shortcuts import get_current_site 
 from django.core.mail import EmailMessage
+from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -71,7 +72,7 @@ class UserActivationView(APIView):
         serializer = UserActivationSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(
+        return JsonResponse(
             {'detail': 'account activation successful'},
             status=status.HTTP_200_OK
         )
