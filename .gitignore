@@ -1,5 +1,7 @@
 .github
 mobile-client
 web-client
-api/accounts/migrations
-api/budget/migrations
+api/accounts/migrations/
+api/budget/migrations/
+__pycache__/
+db.sqlite3
